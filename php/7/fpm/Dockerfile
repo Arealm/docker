@@ -48,8 +48,6 @@ ENV PHP_VERSION 7.1.12
 # COPY php-ext.tar.xz /usr/src/php-ext.tar.xz
 
 RUN set -xe \
-    && curl -o /usr/src/php-ext.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-ext.tar.xz \
-    && curl -o /usr/src/php.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-7.1.12.tar.xz \
     && echo '@community http://nl.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
@@ -95,6 +93,9 @@ RUN set -xe \
         imagemagick-dev \
         libtool \
         libltdl \
+        wget \
+    && wget -O /usr/src/php-ext.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-ext.tar.xz \
+    && wget -O /usr/src/php.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-7.1.12.tar.xz \
     && export CFLAGS="$PHP_CFLAGS" \
         CPPFLAGS="$PHP_CPPFLAGS" \
         LDFLAGS="$PHP_LDFLAGS" \
