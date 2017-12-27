@@ -1,4 +1,4 @@
-﻿FROM alpine:latest
+﻿FROM alpine
 
 # ensure www-data user exists
 RUN set -x \
@@ -13,19 +13,16 @@ ENV HTTPD_PREFIX /usr/local/apache2
 ENV PATH $HTTPD_PREFIX/bin:$PATH
 RUN mkdir -p "$HTTPD_PREFIX" \
 	&& chown www-data:www-data "$HTTPD_PREFIX"
+
 WORKDIR $HTTPD_PREFIX
 
 ENV HTTPD_VERSION 2.4.29
 
-# https://httpd.apache.org/security/vulnerabilities_24.html
-ENV HTTPD_PATCHES=""
-
 COPY httpd-2.4.29.tar.bz2 /usr/local/apache2/httpd.tar.bz2
-COPY httpd-foreground /usr/local/bin/httpd-foreground
 
+# see https://httpd.apache.org/docs/2.4/install.html#requirements
 RUN set -eux; \
 	\
-	chmod +x /usr/local/bin/httpd-foreground \
 	runDeps=' \
 		apr-dev \
 		apr-util-dev \
@@ -60,24 +57,10 @@ RUN set -eux; \
 	tar -xf httpd.tar.bz2 -C src --strip-components=1; \
 	rm httpd.tar.bz2; \
 	cd src; \
-	\
-	patches() { \
-		while [ "$#" -gt 0 ]; do \
-			local patchFile="$1"; shift; \
-			local patchSha256="$1"; shift; \
-			ddist "$patchFile" "httpd/patches/apply_to_$HTTPD_VERSION/$patchFile"; \
-			echo "$patchSha256 *$patchFile" | sha256sum -c -; \
-			patch -p0 < "$patchFile"; \
-			rm -f "$patchFile"; \
-		done; \
-	}; \
-	patches $HTTPD_PATCHES; \
-	\
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
 		--build="$gnuArch" \
 		--prefix="$HTTPD_PREFIX" \
-		# use prefork
 		--with-mpm=prefork \
 		--enable-mods-shared=reallyall \
 	; \
@@ -100,6 +83,10 @@ RUN set -eux; \
 	)"; \
 	apk add --virtual .httpd-rundeps $runDeps; \
 	apk del .build-deps
+
+COPY httpd-foreground /usr/local/bin/httpd-foreground
+
+RUN chmod +x /usr/local/bin/httpd-foreground
 
 EXPOSE 80
 CMD ["httpd-foreground"]
