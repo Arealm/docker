@@ -1,4 +1,4 @@
-﻿FROM alpine
+﻿FROM alpine:3.6
 
 # ensure www-data user exists
 RUN set -x \
@@ -84,9 +84,8 @@ RUN set -eux; \
 	apk add --virtual .httpd-rundeps $runDeps; \
 	apk del .build-deps
 
-COPY httpd-foreground /usr/local/bin/httpd-foreground
-
-RUN chmod +x /usr/local/bin/httpd-foreground
+COPY httpd-foreground /usr/local/bin/
 
 EXPOSE 80
+
 CMD ["httpd-foreground"]
