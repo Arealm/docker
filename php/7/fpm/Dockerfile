@@ -94,6 +94,7 @@ RUN set -xe \
         libtool \
         libltdl \
         wget \
+    && mkdir -p /usr/src \
     && wget -O /usr/src/php-ext.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-ext.tar.xz \
     && wget -O /usr/src/php.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-7.1.12.tar.xz \
     && export CFLAGS="$PHP_CFLAGS" \
