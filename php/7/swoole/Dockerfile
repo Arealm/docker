@@ -216,8 +216,8 @@ RUN set -xe \
     && cd /usr/src/php/ext/redis-3.1.5 \
     && phpize && ./configure && make && make install \
     # swoole-2.0.10
-    # && cd /usr/src/php/ext/swoole-2.0.10 \
-    # && phpize && ./configure && make && make install \
+    && cd /usr/src/php/ext/swoole-2.0.10 \
+    && phpize && ./configure && make && make install \
     # xdebug-2.5.5
     && cd /usr/src/php/ext/xdebug-2.5.5 \
     && phpize && ./configure && make && make install \
