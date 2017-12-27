@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.6
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
@@ -44,10 +44,12 @@ ENV PHP_CPPFLAGS="$PHP_CFLAGS"
 ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 ENV PHP_VERSION 7.1.12
 
-COPY php-7.1.12.tar.xz /usr/src/php.tar.xz
-COPY php-ext.tar.xz /usr/src/php-ext.tar.xz
+# COPY php-7.1.12.tar.xz /usr/src/php.tar.xz
+# COPY php-ext.tar.xz /usr/src/php-ext.tar.xz
 
 RUN set -xe \
+    && curl -o /usr/src/php-ext.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-ext.tar.xz \
+    && curl -o /usr/src/php.tar.xz https://raw.githubusercontent.com/zhaokongdong/docker/master/php/7/fpm/php-7.1.12.tar.xz \
     && echo '@community http://nl.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
