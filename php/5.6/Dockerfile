@@ -1,4 +1,4 @@
-FROM httpd:2.4-alpine
+FROM timzhao/httpd:latest
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
