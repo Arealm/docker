@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.7
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
@@ -210,14 +210,14 @@ RUN set -xe \
     && cd /usr/src/php/ext/memcached-3.0.4 \
     && phpize && ./configure && make && make install \
     # mongodb-1.3.4
-    # && cd /usr/src/php/ext/mongodb-1.3.4 \
-    # && phpize && ./configure && make && make install \
+    && cd /usr/src/php/ext/mongodb-1.3.4 \
+    && phpize && ./configure && make && make install \
     # redis-3.1.5
     && cd /usr/src/php/ext/redis-3.1.5 \
     && phpize && ./configure && make && make install \
     # swoole-2.0.10
-    # && cd /usr/src/php/ext/swoole-2.0.10 \
-    # && phpize && ./configure && make && make install \
+    && cd /usr/src/php/ext/swoole-2.0.10 \
+    && phpize && ./configure && make && make install \
     # xdebug-2.5.5
     && cd /usr/src/php/ext/xdebug-2.5.5 \
     && phpize && ./configure && make && make install \
