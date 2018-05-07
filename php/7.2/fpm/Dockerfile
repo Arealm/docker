@@ -142,8 +142,6 @@ RUN set -xe; \
     export CFLAGS="$PHP_CFLAGS" \
         CPPFLAGS="$PHP_CPPFLAGS" \
         LDFLAGS="$PHP_LDFLAGS" \
-    && mkdir -p /usr/include/freetype2/freetype \
-    && cp /usr/include/tidybuffio.h /usr/include/buffio.h \
     && chmod +x /usr/local/bin/docker-* \
     && docker-php-source extract \
     && cd /usr/src/php \
