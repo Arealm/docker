@@ -88,7 +88,6 @@ RUN set -xe; \
     fi; \
     \
     apk del .fetch-deps; \
-    echo '@community http://nl.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories; \
     \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
@@ -123,7 +122,7 @@ RUN set -xe; \
         libedit-dev \
         net-snmp-dev \
         libxslt-dev \
-        tidyhtml-dev@community \
+        tidyhtml \
         db-dev \
         gdbm-dev \
         libmcrypt \
@@ -138,6 +137,7 @@ RUN set -xe; \
         libtool \
         libltdl \
         wget \
+        ; \
         \
     export CFLAGS="$PHP_CFLAGS" \
         CPPFLAGS="$PHP_CPPFLAGS" \
