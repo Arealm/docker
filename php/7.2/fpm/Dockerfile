@@ -56,6 +56,9 @@ ENV PHP_VERSION 7.2.5
 ENV PHP_URL="https://secure.php.net/get/php-7.2.5.tar.xz/from/this/mirror" PHP_ASC_URL="https://secure.php.net/get/php-7.2.5.tar.xz.asc/from/this/mirror"
 ENV PHP_SHA256="af70a33b3f7a51510467199b39af151333fbbe4cc21923bad9c7cf64268cddb2" PHP_MD5=""
 
+
+COPY docker-php-* /usr/local/bin/
+
 RUN set -xe; \
     \
     apk add --no-cache --virtual .fetch-deps \
@@ -84,11 +87,8 @@ RUN set -xe; \
         rm -rf "$GNUPGHOME"; \
     fi; \
     \
-    apk del .fetch-deps
-
-COPY docker-php-* /usr/local/bin/
-
-RUN apk add --no-cache --virtual .build-deps \
+    apk del .fetch-deps; \
+    apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         coreutils \
         curl-dev \
@@ -135,8 +135,8 @@ RUN apk add --no-cache --virtual .build-deps \
         imagemagick-dev \
         libtool \
         libltdl \
-        wget
-RUN set -xe \
+        wget \
+        \
     export CFLAGS="$PHP_CFLAGS" \
         CPPFLAGS="$PHP_CPPFLAGS" \
         LDFLAGS="$PHP_LDFLAGS" \
@@ -239,9 +239,9 @@ RUN set -xe \
         \
         $PHP_EXTRA_CONFIGURE_ARGS \
     && make -j "$(nproc)" \
-    && make install
+    && make install \
+    \
     # extension install
-RUN set -xe \
     mkdir -p /usr/src/php/ext \
     && cd /usr/src/php/ext \
     # download
@@ -269,7 +269,7 @@ RUN set -xe \
     && cd /usr/src/php/ext/memcached && phpize && ./configure && make && make install \
     && cd /usr/src/php/ext/mongodb && phpize && ./configure && make && make install \
     && cd /usr/src/php/ext/redis && phpize && ./configure && make && make install \
-
+    \
     && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
     && make clean \
     && cd / \
