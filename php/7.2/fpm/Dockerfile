@@ -86,10 +86,9 @@ RUN set -xe; \
     \
     apk del .fetch-deps
 
-COPY docker-php-source /usr/local/bin/
+COPY docker-php-* /usr/local/bin/
 
-RUN set -xe \
-    && apk add --no-cache --virtual .build-deps \
+RUN apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         coreutils \
         curl-dev \
@@ -136,11 +135,12 @@ RUN set -xe \
         imagemagick-dev \
         libtool \
         libltdl \
-        wget \
-    \
-    && export CFLAGS="$PHP_CFLAGS" \
+        wget
+RUN set -xe \
+    export CFLAGS="$PHP_CFLAGS" \
         CPPFLAGS="$PHP_CPPFLAGS" \
         LDFLAGS="$PHP_LDFLAGS" \
+    && chmod +x /usr/local/bin/docker-* \
     && docker-php-source extract \
     && cd /usr/src/php \
     && gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
@@ -152,14 +152,14 @@ RUN set -xe \
         --with-sodium=shared \
         --disable-cgi \
         --enable-short-tags \
-        --with-curlwrappers \
+        # --with-curlwrappers \
         --with-cdb \
-        --with-flatfile \
-        --with-inifile \
+        # --with-flatfile \
+        # --with-inifile \
         --with-libedit \
         --enable-fileinfo \
         --with-xpm-dir \
-        --with-ttf \
+        # --with-ttf \
         --with-mhash \
         --enable-inline-optimization \
         --enable-pcntl \
@@ -198,7 +198,7 @@ RUN set -xe \
         --with-jpeg-dir \
         --with-png-dir \
         --with-freetype-dir \
-        --enable-gd-native-ttf \
+        # --enable-gd-native-ttf \
         --enable-gd-jis-conv \
         --with-xmlrpc \
         --with-iconv \
@@ -211,11 +211,11 @@ RUN set -xe \
         --with-imap-ssl \
         --with-ldap \
         --with-ldap-sasl \
-        --with-mcrypt \
+        # --with-mcrypt \
         --with-gmp \
         --enable-mysqlnd \
         --with-pdo-mysql \
-        --with-mysql \
+        # --with-mysql \
         --with-mysqli \
         --with-pdo-dblib \
         --with-pspell \
@@ -224,7 +224,7 @@ RUN set -xe \
         --with-tidy \
         --with-xsl \
         --with-layout=GNU \
-        --with-regex=php \
+        # --with-regex=php \
         --with-icu-dir=/usr \
         --with-pcre-regex=/usr \
         --with-readline \
@@ -239,9 +239,10 @@ RUN set -xe \
         \
         $PHP_EXTRA_CONFIGURE_ARGS \
     && make -j "$(nproc)" \
-    && make install \
+    && make install
     # extension install
-    && mkdir -p /usr/src/php/ext \
+RUN set -xe \
+    mkdir -p /usr/src/php/ext \
     && cd /usr/src/php/ext \
     # download
     && curl -fsSL 'http://pecl.php.net/get/swoole-2.1.3.tgz' -o swoole.tgz \
@@ -298,8 +299,6 @@ RUN set -xe \
     && echo "extension=redis.so" >> /usr/local/etc/php/php.ini \
     && echo "extension=swoole.so" >> /usr/local/etc/php/php.ini \
     && echo "date.timezone=Asia/Shanghai" >> /usr/local/etc/php/php.ini
-
-COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 
 # sodium was built as a shared module (so that it can be replaced later if so desired), so let's enable it too (https://github.com/docker-library/php/issues/598)
 RUN docker-php-ext-enable sodium
