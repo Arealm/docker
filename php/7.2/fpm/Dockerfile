@@ -223,7 +223,7 @@ RUN set -xe; \
         --with-pspell \
         --with-snmp \
         --enable-simplexml \
-        --with-tidy \
+        # --with-tidy \
         --with-xsl \
         --with-layout=GNU \
         # --with-regex=php \
