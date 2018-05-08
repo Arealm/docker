@@ -253,8 +253,9 @@ RUN set -xe; \
     && curl -fsSL 'http://pecl.php.net/get/memcached-3.0.4.tgz' -o memcached.tgz \
     && curl -fsSL 'http://pecl.php.net/get/mongodb-1.4.3.tgz' -o mongodb.tgz \
     && curl -fsSL 'http://pecl.php.net/get/redis-4.0.2.tgz' -o redis.tgz \
+    && curl -fsSL 'http://pecl.php.net/get/xdebug-2.6.0.tgz' -o xdebug.tgz \
     # create folder and decompression
-    && mkdir -p swoole geoip igbinary imagick memcached mongodb redis \
+    && mkdir -p swoole geoip igbinary imagick memcached mongodb redis xdebug \
     && tar -xf swoole.tgz -C swoole --strip-components=1 && rm swoole.tgz \
     && tar -xf geoip.tgz -C geoip --strip-components=1 && rm geoip.tgz \
     && tar -xf igbinary.tgz -C igbinary --strip-components=1 && rm igbinary.tgz \
@@ -262,6 +263,7 @@ RUN set -xe; \
     && tar -xf memcached.tgz -C memcached --strip-components=1 && rm memcached.tgz \
     && tar -xf mongodb.tgz -C mongodb --strip-components=1 && rm mongodb.tgz \
     && tar -xf redis.tgz -C redis --strip-components=1 && rm redis.tgz \
+    && tar -xf xdebug.tgz -C xdebug --strip-components=1 && rm xdebug.tgz \
     # install
     && cd /usr/src/php/ext/swoole && phpize && ./configure && make && make install \
     && cd /usr/src/php/ext/geoip && phpize && ./configure && make && make install \
@@ -270,6 +272,7 @@ RUN set -xe; \
     && cd /usr/src/php/ext/memcached && phpize && ./configure && make && make install \
     && cd /usr/src/php/ext/mongodb && phpize && ./configure && make && make install \
     && cd /usr/src/php/ext/redis && phpize && ./configure && make && make install \
+    && cd /usr/src/php/ext/xdebug && phpize && ./configure && make && make install \
     # ext end
     && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
     && make clean \
@@ -288,8 +291,8 @@ RUN set -xe; \
     && rm -rf /tmp/pear ~/.pearrc \
     # add php ext config
     && touch /usr/local/etc/php/php.ini \
-    && echo "zend_extension=xdebug.so" >> /usr/local/etc/php/php.ini \
     && echo "zend_extension=opcache.so" >> /usr/local/etc/php/php.ini \
+    && echo "zend_extension=xdebug.so" >> /usr/local/etc/php/php.ini \
     && echo "extension=geoip.so" >> /usr/local/etc/php/php.ini \
     && echo "extension=igbinary.so" >> /usr/local/etc/php/php.ini \
     && echo "extension=imagick.so" >> /usr/local/etc/php/php.ini \
