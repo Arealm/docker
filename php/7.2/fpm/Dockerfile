@@ -242,9 +242,8 @@ RUN set -xe; \
         $PHP_EXTRA_CONFIGURE_ARGS \
     && make -j "$(nproc)" \
     && make install \
-    \
     # extension install
-    mkdir -p /usr/src/php/ext \
+    && mkdir -p /usr/src/php/ext \
     && cd /usr/src/php/ext \
     # download
     && curl -fsSL 'http://pecl.php.net/get/swoole-2.1.3.tgz' -o swoole.tgz \
@@ -271,12 +270,11 @@ RUN set -xe; \
     && cd /usr/src/php/ext/memcached && phpize && ./configure && make && make install \
     && cd /usr/src/php/ext/mongodb && phpize && ./configure && make && make install \
     && cd /usr/src/php/ext/redis && phpize && ./configure && make && make install \
-    \
+    # ext end
     && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
     && make clean \
     && cd / \
     && docker-php-source delete \
-    \
     && runDeps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
@@ -284,15 +282,14 @@ RUN set -xe; \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )" \
     && apk add --no-cache --virtual .php-rundeps $runDeps \
-    \
     && apk del .build-deps \
-    \
 # https://github.com/docker-library/php/issues/443
     && pecl update-channels \
     && rm -rf /tmp/pear ~/.pearrc \
-
     # add php ext config
     && touch /usr/local/etc/php/php.ini \
+    && echo "zend_extension=xdebug.so" >> /usr/local/etc/php/php.ini \
+    && echo "zend_extension=opcache.so" >> /usr/local/etc/php/php.ini \
     && echo "extension=geoip.so" >> /usr/local/etc/php/php.ini \
     && echo "extension=igbinary.so" >> /usr/local/etc/php/php.ini \
     && echo "extension=imagick.so" >> /usr/local/etc/php/php.ini \
