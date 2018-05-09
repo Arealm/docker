@@ -12,6 +12,8 @@ RUN echo "Include conf/sites-conf/httpd-sbg.conf" >> /usr/local/apache2/conf/htt
 
 VOLUME [ "/var/www/html" ]
 
+COPY httpd.conf /usr/local/apache2/conf/httpd.conf
+
 COPY sites-conf/ /usr/local/apache2/conf/sites-conf
 
 WORKDIR /var/www/html
