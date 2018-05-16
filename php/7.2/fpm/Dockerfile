@@ -1,5 +1,5 @@
 # copy from php offical dockerfile 7.2-fpm
-
+# timzhao/php:7.2-fpm latest
 FROM alpine:3.7
 
 # dependencies required for running "phpize"
