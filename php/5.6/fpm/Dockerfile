@@ -258,7 +258,7 @@ RUN set -xe \
     && curl -fsSL 'http://pecl.php.net/get/memcache-2.2.7.tgz' -o memcache.tgz \
     && curl -fsSL 'http://pecl.php.net/get/mongodb-1.4.3.tgz' -o mongodb.tgz \
     && curl -fsSL 'http://pecl.php.net/get/redis-4.0.2.tgz' -o redis.tgz \
-    && curl -fsSL 'http://pecl.php.net/get/xdebug-2.6.0.tgz' -o xdebug.tgz \
+    && curl -fsSL 'http://pecl.php.net/get/xdebug-2.5.5.tgz' -o xdebug.tgz \
     # create folder and decompression
     && mkdir -p swoole geoip igbinary imagick memcached memcache mongodb redis xdebug \
     && tar -xf swoole.tgz -C swoole --strip-components=1 && rm swoole.tgz \
