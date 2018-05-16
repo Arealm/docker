@@ -254,7 +254,7 @@ RUN set -xe \
     && curl -fsSL 'http://pecl.php.net/get/geoip-1.1.1.tgz' -o geoip.tgz \
     && curl -fsSL 'http://pecl.php.net/get/igbinary-2.0.5.tgz' -o igbinary.tgz \
     && curl -fsSL 'http://pecl.php.net/get/imagick-3.4.3.tgz' -o imagick.tgz \
-    && curl -fsSL 'http://pecl.php.net/get/memcached-3.0.4.tgz' -o memcached.tgz \
+    && curl -fsSL 'http://pecl.php.net/get/memcached-2.2.0.tgz' -o memcached.tgz \
     && curl -fsSL 'http://pecl.php.net/get/memcache-2.2.7.tgz' -o memcache.tgz \
     && curl -fsSL 'http://pecl.php.net/get/mongodb-1.4.3.tgz' -o mongodb.tgz \
     && curl -fsSL 'http://pecl.php.net/get/redis-4.0.2.tgz' -o redis.tgz \

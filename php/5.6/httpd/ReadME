@@ -1,2 +1,0 @@
-version: http-alpine
-use: alpine + httpd2.4 + php5.6.30
