@@ -8,7 +8,11 @@ ENV SBG_ENV development
 
 ENV OM_ENV development
 
-RUN echo "Include conf/sites-conf/httpd-sbg.conf" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "Include conf/sites-conf/httpd-sbg.conf" >> /usr/local/apache2/conf/httpd.conf \
+	# install composer
+    && php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
 
 VOLUME [ "/var/www/html" ]
 
