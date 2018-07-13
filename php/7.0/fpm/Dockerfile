@@ -54,6 +54,8 @@ ENV PHP_VERSION 7.0.30
 ENV PHP_URL="https://secure.php.net/get/php-7.0.30.tar.xz/from/this/mirror" PHP_ASC_URL="https://secure.php.net/get/php-7.0.30.tar.xz.asc/from/this/mirror"
 ENV PHP_SHA256="c90892fb68ab9b8476519658d3f78f6388f2609ae1309bdc2a2e1cc9f92dd686" PHP_MD5=""
 
+COPY docker-php-* /usr/local/bin/
+
 RUN set -xe; \
     \
     apk add --no-cache --virtual .fetch-deps \
